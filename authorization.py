@@ -35,4 +35,42 @@ class Recorder:
             "chainId": 1,
         }
 
-   
+    def write(self, signed_data):
+        content = {
+            "created": self.time,
+            "network": network,
+            "signature": signed_data,
+        }
+
+        Path("record.json").write_text(
+            json.dumps(content, indent=2)
+        )
+
+
+tool = Recorder()
+
+payload = tool.transaction()
+
+signed_tx = identity.sign_transaction(payload)
+
+encoded = signed_tx.raw_transaction.hex()
+
+tool.write(encoded)
+
+messages = [
+    network,
+    fast_settlement,
+    solutions,
+]
+
+print("Address:", identity.address)
+print("Connected:", client.is_connected())
+
+for item in messages:
+    print(item)
+
+print("Nonce:", payload["nonce"])
+print("Gas:", payload["gas"])
+print("Interaction recorded")
+print("Session closed")
+```
